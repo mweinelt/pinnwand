@@ -1,4 +1,5 @@
 <select name="lexer">
+    <option value="AUTO">Autodetect</option>
     {% if handler.application.configuration.preferred_lexers %}
         {% for key in handler.application.configuration.preferred_lexers %}
             <option value="{{ key }}"{% if selected == key %} selected="selected"{% end %}>{{ lexers[key] }}</option>

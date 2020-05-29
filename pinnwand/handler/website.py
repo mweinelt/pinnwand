@@ -5,6 +5,7 @@ from datetime import datetime
 
 import docutils.core
 import tornado.web
+from pygments.lexers import guess_lexer
 
 from pinnwand import database, path, utility, error
 
@@ -174,6 +175,13 @@ class CreateAction(Base):
                 raise error.ValidationError()
 
             for (lexer, raw, filename) in zip(lexers, raws, filenames):
+                if lexer == 'AUTO':
+                    try:
+                        lexer = guess_lexer(raw).name
+                    except ValueError:
+                        # Fall back to plain text
+                        lexer = "text"
+
                 if lexer not in utility.list_languages():
                     log.info("CreateAction.post: a file had an invalid lexer")
                     raise error.ValidationError()
